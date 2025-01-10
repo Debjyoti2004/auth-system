@@ -8,35 +8,32 @@ export const register = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-        return res.json({ success: false, message: "Missing Details" });
+        return res.json({ success: false, message: "Missing Details" })
     }
 
     try {
-        // Check if user already exists
-        const ifUserExisting = await userModel.findOne({ email });
+        const ifUserExisting = await userModel.findOne({ email })
         if (ifUserExisting) {
-            return res.json({ success: false, message: "User already exists" });
+            return res.json({ success: false, message: "User already exists" })
         }
 
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        // Create the user in the database
-        const user = new userModel({ name, email, password: hashedPassword });
-        await user.save();
+        const user = new userModel({ name, email, password: hashedPassword })
+        await user.save()
 
-        // Create the JWT token for the user
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '10d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '10d' })
 
         // Send the token in the cookie
         res.cookie("Token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            maxAge: 10 * 24 * 60 * 60 * 1000,
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: 'none', 
+            maxAge: 10 * 24 * 60 * 60 * 1000, 
         });
+        
 
-        // Send Welcome Email (no OTP here)
+        
         const mailOptions = {
             from: process.env.SENDER_EMAILID,
             to: user.email,
@@ -188,19 +185,19 @@ export const register = async (req, res) => {
                 </body>
             </html>
             `
-        };
+        }
 
 
 
         // Send the welcome email
-        await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions)
 
         return res.json({ success: true, message: "Registration successful! Please check your email for further instructions." });
 
     } catch (error) {
-        res.json({ success: false, message: error.message });
+        res.json({ success: false, message: error.message })
     }
-};
+}
 
 export const login = async (req, res) => {
 
@@ -212,27 +209,27 @@ export const login = async (req, res) => {
 
     try {
 
-        // Find the user in our database
+        
         const user_find = await userModel.findOne({ email })
         if (!user_find) {
             return res.json({ success: false, message: 'Invalid Email' })
         }
-        // Check the user password match or not
+       
         const isPasswordMatch = await bcrypt.compare(password, user_find.password)
         if (!isPasswordMatch) {
             return res.json({ success: false, message: 'Invalid Password' })
         }
 
-        //Create the token
+        
         const token = jwt.sign({ id: user_find._id }, process.env.JWT_SECRET, { expiresIn: '10d' })
 
-        // we send the token in cookie
+        
         res.cookie("Token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            maxAge: 10 * 24 * 60 * 60 * 1000
-        })
+            sameSite: 'none',
+            maxAge: 10 * 24 * 60 * 60 * 1000, 
+        });
         return res.json({ success: true })
 
     } catch (error) {
@@ -245,14 +242,15 @@ export const logout = async (req, res) => {
         res.clearCookie('Token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-        })
-        return res.json({ success: true, message: "Logged Out" })
+            sameSite: 'none',  
+        });
+        return res.json({ success: true, message: "Logged Out" });
 
     } catch (error) {
-        return res.json({ success: false, message: error.message })
+        return res.json({ success: false, message: error.message });
     }
 }
+
 
 // Send Verification OTP to the User's Email
 export const sendVerifyOtp = async (req, res) => {
