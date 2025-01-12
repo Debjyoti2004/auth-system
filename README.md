@@ -4,6 +4,22 @@ A comprehensive authentication system featuring a secure and user-friendly inter
 
 ![Welcome Page](./image/auth-landing.png)
 
+## 🏗️ Architecture Overview
+Our system utilizes a modern cloud architecture deployed on AWS:
+
+- **User interactions managed through GitHub**
+- **Frontend built with React**
+- **Node.js backend running on AWS EC2 instances**
+- **Load balancing through AWS Elastic Load Balancer**
+- **Multiple EC2 instances for high availability**
+- **MongoDB database for secure data storage**
+
+### Architecture Diagram
+![Architecture Diagram](./path/to/your/architecture/diagram.png)
+
+
+
+
 ## 🌟 Features
 
 ### Elegant User Interface
