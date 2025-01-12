@@ -15,7 +15,7 @@ Our system utilizes a modern cloud architecture deployed on AWS:
 - **MongoDB database for secure data storage**
 
 ### Architecture Diagram
-![Architecture Diagram](./architecture.png)
+![Architecture Diagram](./image//architecture.png)
 
 
 
