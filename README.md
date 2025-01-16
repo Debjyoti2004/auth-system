@@ -1,4 +1,4 @@
-# Modern Authentication System 🔐
+# Multi-Factor Authentication (MFA) on AWS Infrastructure🔐
 
 A comprehensive authentication system featuring a secure and user-friendly interface built with React, Node.js, MongoDB, and Tailwind CSS.
 
